@@ -2,20 +2,25 @@ namespace CodecraftersShell.Commands;
 
 public class CdCommand: ICommand
 {
-    public void Handle(string arguments)
+    public void Handle(string path)
     {
-        if (string.IsNullOrWhiteSpace(arguments))
+        if (string.IsNullOrWhiteSpace(path))
         {
-            throw new ArgumentException("Arguments cannot be null or whitespace");
+            throw new ArgumentException("Path cannot be null or whitespace");
         }
 
-        if (Directory.Exists(arguments))
+        if (path.Equals("~"))
         {
-            Directory.SetCurrentDirectory(arguments);
+            path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        }
+
+        if (Directory.Exists(path))
+        {
+            Directory.SetCurrentDirectory(path);
         }
         else
         {
-            Console.WriteLine($"cd: {arguments}: No such file or directory");
+            Console.WriteLine($"cd: {path}: No such file or directory");
         }
     }
 }
