@@ -14,14 +14,4 @@ public static class StringExtension
         }
         return input;
     }
-
-    public static string GetTextWithinSingleQuotes(this string input, out bool hasQuotes)
-    {
-        hasQuotes = false;
-        if (!input.StartsWith("'") || !input.EndsWith("'") || input.Length <= 1) 
-            return input;
-        
-        hasQuotes = true;
-        return input.Substring(1, input.Length - 2);
-    }
 }
