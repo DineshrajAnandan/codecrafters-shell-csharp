@@ -11,6 +11,8 @@ public class FileHelper
             .ToArray();
         foreach (var sourcePath in sourcePaths)
         {
+            var files = Directory.GetFiles(sourcePath);
+            Console.WriteLine(string.Join(", ",files));
             var filePath = Path.Combine(sourcePath, fileName);
             if (File.Exists(filePath))
             {
