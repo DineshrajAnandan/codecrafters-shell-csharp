@@ -6,5 +6,10 @@ while (true)
     {
         break;
     }
-    Console.WriteLine($"{command}: command not found");
+    else if (command.StartsWith("echo "))
+    {
+        Console.WriteLine(command.Replace("echo ",""));
+    }
+    else 
+        Console.WriteLine($"{command}: command not found");
 }
