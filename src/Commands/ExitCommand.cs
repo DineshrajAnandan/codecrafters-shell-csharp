@@ -1,4 +1,4 @@
-namespace codecraftersShell.Commands;
+namespace CodecraftersShell.Commands;
 
 public class ExitCommand: ICommand
 {

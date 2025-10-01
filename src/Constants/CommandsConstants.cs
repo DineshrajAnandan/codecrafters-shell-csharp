@@ -1,4 +1,4 @@
-namespace codecrafters_shell.Constants;
+namespace CodecraftersShell.Constants;
 
 public static class CommandsConstants
 {
@@ -6,7 +6,8 @@ public static class CommandsConstants
     public const string EXIT = "exit";
     public const string TYPE = "type";
     public const string PWD = "pwd";
+    public const string CD = "cd";
     
     public static readonly HashSet<string> BuiltInCommands = 
-        [ECHO, EXIT, TYPE, PWD];
+        [ECHO, EXIT, TYPE, PWD, CD];
 }

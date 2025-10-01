@@ -1,7 +1,7 @@
-using codecrafters_shell.Constants;
-using codecraftersShell.Helpers;
+using CodecraftersShell.Constants;
+using CodecraftersShell.Helpers;
 
-namespace codecraftersShell.Commands;
+namespace CodecraftersShell.Commands;
 
 public class TypeCommand: ICommand
 {

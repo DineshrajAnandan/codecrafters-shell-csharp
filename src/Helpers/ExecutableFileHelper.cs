@@ -1,4 +1,4 @@
-namespace codecraftersShell.Helpers;
+namespace CodecraftersShell.Helpers;
 
 public static class ExecutableFileHelper
 {

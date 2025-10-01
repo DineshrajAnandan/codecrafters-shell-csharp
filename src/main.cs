@@ -1,5 +1,5 @@
-using codecraftersShell.Commands;
-using codecrafters_shell.Constants;
+using CodecraftersShell.Commands;
+using CodecraftersShell.Constants;
 
 while (true)
 {
@@ -17,6 +17,7 @@ while (true)
             CommandsConstants.ECHO => new EchoCommand(),
             CommandsConstants.TYPE => new TypeCommand(),
             CommandsConstants.PWD => new PwdCommand(),
+            CommandsConstants.CD => new CdCommand(),
             _ => new CustomCommand(command)
         };
         commandToExecute.Handle(arguments);

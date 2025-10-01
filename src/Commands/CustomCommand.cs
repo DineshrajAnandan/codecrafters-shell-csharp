@@ -1,6 +1,6 @@
-using codecraftersShell.Helpers;
+using CodecraftersShell.Helpers;
 
-namespace codecraftersShell.Commands;
+namespace CodecraftersShell.Commands;
 
 public class CustomCommand: ICommand
 {
