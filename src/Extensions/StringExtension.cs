@@ -1,6 +1,6 @@
 namespace CodecraftersShell.Extensions;
 
-public static class StringHelper
+public static class StringExtension
 {
     public static string TrimTrailingEmptyLine(this string input)
     {
@@ -15,12 +15,13 @@ public static class StringHelper
         return input;
     }
 
-    public static string GetTextWithinSingleQuotes(this string input)
+    public static string GetTextWithinSingleQuotes(this string input, out bool hasQuotes)
     {
-        if (input.StartsWith("'") && input.EndsWith("'") && input.Length > 1)
-        {
-            return input.Substring(1, input.Length - 2);
-        }
-        return input;
+        hasQuotes = false;
+        if (!input.StartsWith("'") || !input.EndsWith("'") || input.Length <= 1) 
+            return input;
+        
+        hasQuotes = true;
+        return input.Substring(1, input.Length - 2);
     }
 }
