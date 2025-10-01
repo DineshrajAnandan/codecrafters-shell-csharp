@@ -16,6 +16,7 @@ while (true)
             CommandsConstants.EXIT => new ExitCommand(),
             CommandsConstants.ECHO => new EchoCommand(),
             CommandsConstants.TYPE => new TypeCommand(),
+            CommandsConstants.PWD => new PwdCommand(),
             _ => new CustomCommand(command)
         };
         commandToExecute.Handle(arguments);
