@@ -19,7 +19,7 @@ public class CustomCommand: ICommand
             _command);
         
         if(string.IsNullOrEmpty(result))
-            throw new Exception($"{_command} {arguments}: command not found");
+            throw new Exception($"{_command}: command not found");
         
         var output = ExecutableFileHelper.ExecuteFile(_command, arguments);
         Console.WriteLine(StringHelper.TrimTrailingEmptyLine(output));
