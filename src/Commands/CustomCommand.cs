@@ -1,3 +1,4 @@
+using CodecraftersShell.Extensions;
 using CodecraftersShell.Helpers;
 
 namespace CodecraftersShell.Commands;
@@ -22,6 +23,6 @@ public class CustomCommand: ICommand
             throw new Exception($"{_command}: command not found");
         
         var output = ExecutableFileHelper.ExecuteFile(_command, arguments);
-        Console.WriteLine(StringHelper.TrimTrailingEmptyLine(output));
+        Console.WriteLine(output.TrimTrailingEmptyLine());
     }
 }
