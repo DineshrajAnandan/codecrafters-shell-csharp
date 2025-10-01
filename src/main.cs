@@ -1,31 +1,36 @@
-string[] builtInCommands = ["echo", "exit", "type"];
+using codecrafters_shell.Constants;
 
 while (true)
 {
     Console.Write("$ ");
-    var command = Console.ReadLine();
-    if (command == "exit 0")
-    {
-        break;
-    }
+    var input = Console.ReadLine();
+    var inputArr = input.Split(' ', 2);
+    var command = inputArr[0];
+    var arguments = inputArr.Length == 1 ? null : inputArr[1];
 
-    if (command.StartsWith("echo "))
+    switch (command)
     {
-        Console.WriteLine(command.Replace("echo ", ""));
-    }
-
-    if (command.StartsWith("type "))
-    {
-        var type = command.Split(' ')[1];
-        if (builtInCommands.Contains(type))
+        case Commands.EXIT:
         {
-            Console.WriteLine($"{type} is a shell builtin");
+            var exitCode = arguments == null ? 0 : int.Parse(arguments);
+            Environment.Exit(exitCode);
+            return;
         }
-        else
+        case Commands.TYPE:
         {
-            Console.WriteLine($"{type}: not found   ");
+            var type = arguments;
+            Console.WriteLine(Commands.BuiltInCommands.Contains(type)
+                ? $"{type} is a shell builtin"
+                : $"{type}: not found   ");
+            break;
         }
+        case Commands.ECHO:
+        {
+            Console.WriteLine(arguments);
+            break;
+        }
+        default:
+            Console.WriteLine($"{command}: command not found");
+            break;
     }
-    else
-        Console.WriteLine($"{command}: command not found");
 }
