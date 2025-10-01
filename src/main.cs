@@ -14,7 +14,7 @@ while (true)
         ICommand commandToExecute = command switch
         {
             CommandsConstants.EXIT => new ExitCommand(),
-            CommandsConstants.ECHO => new EchoCommand(),
+            // CommandsConstants.ECHO => new EchoCommand(),
             CommandsConstants.TYPE => new TypeCommand(),
             CommandsConstants.PWD => new PwdCommand(),
             CommandsConstants.CD => new CdCommand(),
