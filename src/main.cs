@@ -1,4 +1,4 @@
-using codecrafterdShell.Commands;
+using codecraftersShell.Commands;
 using codecrafters_shell.Constants;
 
 while (true)

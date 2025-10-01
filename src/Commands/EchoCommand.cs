@@ -1,4 +1,4 @@
-namespace codecrafterdShell.Commands;
+namespace codecraftersShell.Commands;
 
 public class EchoCommand: ICommand
 {

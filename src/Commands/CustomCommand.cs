@@ -1,6 +1,6 @@
 using codecraftersShell.Helpers;
 
-namespace codecrafterdShell.Commands;
+namespace codecraftersShell.Commands;
 
 public class CustomCommand: ICommand
 {
@@ -22,6 +22,6 @@ public class CustomCommand: ICommand
             throw new Exception($"{_command} {arguments}: command not found");
         
         var output = ExecutableFileHelper.ExecuteFile(_command, arguments);
-        // Console.WriteLine(output);
+        Console.WriteLine(StringHelper.TrimTrailingEmptyLine(output));
     }
 }
