@@ -16,7 +16,7 @@ while (true)
             CommandsConstants.EXIT => new ExitCommand(),
             CommandsConstants.ECHO => new EchoCommand(),
             CommandsConstants.TYPE => new TypeCommand(),
-            _ => throw new Exception($"{command}: command not found")
+            _ => new CustomCommand(command)
         };
         commandToExecute.Handle(arguments);
     }
