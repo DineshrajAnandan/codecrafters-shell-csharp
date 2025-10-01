@@ -8,7 +8,6 @@ public class FileHelper
     {
         var sourcePaths = paths.Split(Path.PathSeparator)
             .Where(Directory.Exists)
-            .Reverse()
             .ToArray();
         foreach (var sourcePath in sourcePaths)
         {
