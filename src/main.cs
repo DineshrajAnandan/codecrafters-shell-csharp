@@ -1,3 +1,4 @@
+using codecrafterdShell.Commands;
 using codecrafters_shell.Constants;
 
 while (true)
@@ -8,29 +9,20 @@ while (true)
     var command = inputArr[0];
     var arguments = inputArr.Length == 1 ? null : inputArr[1];
 
-    switch (command)
+    try
     {
-        case Commands.EXIT:
+        ICommand commandToExecute = command switch
         {
-            var exitCode = arguments == null ? 0 : int.Parse(arguments);
-            Environment.Exit(exitCode);
-            return;
-        }
-        case Commands.TYPE:
-        {
-            var type = arguments;
-            Console.WriteLine(Commands.BuiltInCommands.Contains(type)
-                ? $"{type} is a shell builtin"
-                : $"{type}: not found   ");
-            break;
-        }
-        case Commands.ECHO:
-        {
-            Console.WriteLine(arguments);
-            break;
-        }
-        default:
-            Console.WriteLine($"{command}: command not found");
-            break;
+            CommandsConstants.EXIT => new ExitCommand(),
+            CommandsConstants.ECHO => new EchoCommand(),
+            CommandsConstants.TYPE => new TypeCommand(),
+            _ => throw new Exception($"{command}: command not found")
+        };
+        commandToExecute.Handle(arguments);
     }
+    catch (Exception e)
+    {
+        Console.WriteLine(e.Message);
+    }
+    
 }

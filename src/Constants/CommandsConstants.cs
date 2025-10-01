@@ -1,6 +1,6 @@
 namespace codecrafters_shell.Constants;
 
-public static class Commands
+public static class CommandsConstants
 {
     public const string ECHO = "echo";
     public const string EXIT = "exit";
