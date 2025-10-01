@@ -2,13 +2,13 @@ namespace codecraftersShell.Helpers;
 
 public static class ExecutableFileHelper
 {
-    public static string ExecuteFile(string filePath, string arguments)
+    public static string ExecuteFile(string command, string arguments)
     {
         var process = new System.Diagnostics.Process
         {
             StartInfo = new System.Diagnostics.ProcessStartInfo
             {
-                FileName = filePath,
+                FileName = command,
                 Arguments = arguments,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
