@@ -12,7 +12,11 @@ public class FileHelper
         foreach (var sourcePath in sourcePaths)
         {
             var filePath = Path.Combine(sourcePath, fileName);
-            if (File.Exists(filePath))
+            if (!File.Exists(filePath)) 
+                continue;
+            
+            var mode = File.GetUnixFileMode(filePath);
+            if (mode.HasFlag(UnixFileMode.UserExecute))
             {
                 return filePath;
             }
