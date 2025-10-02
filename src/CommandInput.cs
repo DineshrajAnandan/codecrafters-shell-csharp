@@ -38,6 +38,8 @@ public class CommandInput
     private bool TryAutoCompleteFromExecutableFile(string prefix, out string remainingSubString)
     {
         var result = FileHelper.SearchFileNameInPathsByPrefix(Input);
+        if(!string.IsNullOrEmpty(result))
+            result = Path.GetFileName(result);
         remainingSubString = result?.Substring(Input.Length) ?? string.Empty;
         return !string.IsNullOrEmpty(remainingSubString);
     }
