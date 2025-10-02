@@ -11,16 +11,19 @@ while (true)
 
     if (keyInfo.Key == ConsoleKey.Tab)
     {
-        ClearCurrentConsoleLine();
+        // ClearCurrentConsoleLine();
             
         string input = inputBuilder.ToString();
 
         var command = CommandsConstants.BuiltInCommands
             .FirstOrDefault(c => c.StartsWith(input));
-        var displayText = string.IsNullOrEmpty(command) ? input : $"{command} ";
-        inputBuilder.Clear();
-        inputBuilder.Append(displayText);
-        Console.Write($"$ {displayText}");
+        if(string.IsNullOrEmpty(command))
+            continue;
+        var remainingChars = command.Substring(input.Length);
+        // var displayText = string.IsNullOrEmpty(command) ? input : $"{command} ";
+        // inputBuilder.Clear();
+        inputBuilder.Append($"{remainingChars} ");
+        Console.Write($"{remainingChars} ");
     }
     else if (keyInfo.Key == ConsoleKey.Enter)
     {
