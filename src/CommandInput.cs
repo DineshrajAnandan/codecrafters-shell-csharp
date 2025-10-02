@@ -39,7 +39,7 @@ public class CommandInput
     {
         if (!CommandsConstants.TryAutoCompleteCommand(Input, out var remainingSubString))
         {
-            Console.Beep();
+            Beep();
             return;
         }
         Append(remainingSubString + " ");
@@ -50,5 +50,10 @@ public class CommandInput
         Console.Write("\n");
         _processor.Process(Input);
         NewLine();
+    }
+    
+    private void Beep()
+    {
+        Console.Write("\x07");
     }
 }
