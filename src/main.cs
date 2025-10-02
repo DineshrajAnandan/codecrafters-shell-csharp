@@ -17,7 +17,7 @@ while (true)
 
         var command = CommandsConstants.BuiltInCommands
             .FirstOrDefault(c => c.StartsWith(input));
-        var displayText = string.IsNullOrEmpty(command) ? input : command;
+        var displayText = string.IsNullOrEmpty(command) ? input : $"{command} ";
         inputBuilder.Clear();
         inputBuilder.Append(displayText);
         Console.Write($"$ {displayText}");
@@ -50,12 +50,9 @@ while (true)
 
 void ClearCurrentConsoleLine()
 {
-    int currentLineCursor = Console.CursorTop;
-    // Move the cursor to the start of the line.
+    var currentLineCursor = Console.CursorTop;
     Console.SetCursorPosition(0, currentLineCursor);
-    // Overwrite the line with a string of spaces.
     Console.Write(new string(' ', Console.WindowWidth));
-    // Move the cursor back to the start of the cleared line.
     Console.SetCursorPosition(0, currentLineCursor);
 }
 
