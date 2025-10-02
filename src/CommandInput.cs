@@ -37,8 +37,11 @@ public class CommandInput
 
     public void TryAutoComplete()
     {
-        if(!CommandsConstants.TryAutoCompleteCommand(Input, out var remainingSubString))
+        if (!CommandsConstants.TryAutoCompleteCommand(Input, out var remainingSubString))
+        {
+            Console.Beep();
             return;
+        }
         Append(remainingSubString + " ");
     }
 
