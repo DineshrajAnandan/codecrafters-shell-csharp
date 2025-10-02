@@ -47,7 +47,7 @@ public class InputCommandHelper
     
     private static IEnumerable<string> GetAllExecutableFilesCommandByPrefix(string prefix)
     {
-        return FileHelper.SearchFileNameInPathsByPrefix(prefix);
+        return FileHelper.SearchFileNameInPathsByPrefix(prefix).Select(Path.GetFileName);
     }
     
 }
