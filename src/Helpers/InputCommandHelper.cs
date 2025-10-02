@@ -18,28 +18,28 @@ public class InputCommandHelper
         bool showAllCommands,
         out IEnumerable<string> commands)
     {
-        commands = [];
         remainingSubString = string.Empty;
-        var allCommands = new List<string>();
-        allCommands.AddRange(GetAllBuiltInCommandsByPrefix(prefix));
-        if(!allCommands.Any())
-            allCommands.AddRange(GetAllExecutableFilesCommandByPrefix(prefix));
-        allCommands.Sort();
-        
-        if (!allCommands.Any())
-            return false;
-
-        if (allCommands.Count == 1)
+        var builtIn = GetAllBuiltInCommandsByPrefix(prefix);
+        var executables = GetAllExecutableFilesCommandByPrefix(prefix);
+    
+        var allCommands = builtIn.Concat(executables)
+                                            .Distinct()
+                                            .OrderBy(c => c)
+                                            .ToList();
+    
+        switch (allCommands.Count)
         {
-            remainingSubString = allCommands[0].Substring(prefix.Length);
-            return true;
+            case 0:
+                commands = [];
+                return false;
+            case 1:
+                commands = allCommands;
+                remainingSubString = allCommands[0].Substring(prefix.Length);
+                return true;
+            default:
+                commands = showAllCommands ? allCommands : [];
+                return showAllCommands;
         }
-
-        if (!showAllCommands)
-            return false;
-        
-        commands = allCommands;
-        return true;
     }
 
     private static IEnumerable<string> GetAllBuiltInCommandsByPrefix(string prefix)
