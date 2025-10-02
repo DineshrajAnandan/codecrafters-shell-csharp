@@ -37,7 +37,14 @@ public class CommandInput
 
     public void TryAutoComplete()
     {
-        if (!CommandsConstants.TryAutoCompleteCommand(Input, out var remainingSubString))
+        string remainingSubString;
+        var inCommands = CommandsConstants.TryAutoCompleteCommand(Input, out remainingSubString);
+        var inFiles = false;
+        if (!inCommands)
+        {
+            remainingSubString = FileHelper.SearchFileNameInPathsByPrefix(Environment.GetEnvironmentVariable("PATH"), Input);
+        }
+        if (!inCommands && !inFiles)
         {
             Beep();
             return;
