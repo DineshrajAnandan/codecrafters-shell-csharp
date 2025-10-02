@@ -22,7 +22,8 @@ public class InputCommandHelper
         remainingSubString = string.Empty;
         var allCommands = new List<string>();
         allCommands.AddRange(GetAllBuiltInCommandsByPrefix(prefix));
-        allCommands.AddRange(GetAllExecutableFilesCommandByPrefix(prefix));
+        if(!allCommands.Any())
+            allCommands.AddRange(GetAllExecutableFilesCommandByPrefix(prefix));
         allCommands.Sort();
         
         if (!allCommands.Any())
