@@ -1,0 +1,42 @@
+using System.Text;
+using CodecraftersShell.Constants;
+
+namespace CodecraftersShell.Helpers;
+
+public class CommandInput
+{
+    private StringBuilder _inputBuilder = new();
+    public string Input => _inputBuilder.ToString();
+
+    public CommandInput()
+    {
+        Console.Write("$ ");
+    }
+
+    public void NewLine()
+    {
+        _inputBuilder.Clear();
+        Console.Write("$ ");
+    }
+    
+    public void Append<T>(T text)
+    {
+        _inputBuilder.Append(text);
+        Console.Write(text);
+    }
+
+    public void RemoveLastChar()
+    {
+        if(_inputBuilder.Length <= 0)
+            return;
+        _inputBuilder.Remove(_inputBuilder.Length - 1, 1);
+        Console.Write("\b \b");
+    }
+
+    public void TryAutoComplete()
+    {
+        if(!CommandsConstants.TryAutoCompleteCommand(Input, out var remainingSubString))
+            return;
+        Append(remainingSubString + " ");
+    }
+}

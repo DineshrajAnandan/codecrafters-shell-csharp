@@ -3,61 +3,35 @@ using CodecraftersShell.Commands;
 using CodecraftersShell.Constants;
 using CodecraftersShell.Helpers;
 
-var inputBuilder = new StringBuilder();
-Console.Write("$ ");
+var commandInput = new CommandInput();
+
 while (true)
 {
-    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+    var keyInfo = Console.ReadKey(true);
 
-    if (keyInfo.Key == ConsoleKey.Tab)
+    switch (keyInfo.Key)
     {
-        // ClearCurrentConsoleLine();
-            
-        string input = inputBuilder.ToString();
-
-        var command = CommandsConstants.BuiltInCommands
-            .FirstOrDefault(c => c.StartsWith(input));
-        if(string.IsNullOrEmpty(command))
-            continue;
-        var remainingChars = command.Substring(input.Length);
-        // var displayText = string.IsNullOrEmpty(command) ? input : $"{command} ";
-        // inputBuilder.Clear();
-        inputBuilder.Append($"{remainingChars} ");
-        Console.Write($"{remainingChars} ");
+        case ConsoleKey.Tab:
+        {
+            commandInput.TryAutoComplete();
+            break;
+        }
+        case ConsoleKey.Enter:
+        {
+            Console.Write("\n");
+            ProcessOnEnterCommand(commandInput.Input);
+            commandInput.NewLine();
+            break;
+        }
+        case ConsoleKey.Backspace:
+            commandInput.RemoveLastChar();
+            break;
+        default:
+            commandInput.Append(keyInfo.KeyChar);
+            break;
     }
-    else if (keyInfo.Key == ConsoleKey.Enter)
-    {
-        string input = inputBuilder.ToString();
-        Console.Write("\n");
-        inputBuilder.Clear();
-        ProcessOnEnterCommand(input);
-        Console.Write("$ ");    
-    }
-    else if (keyInfo.Key == ConsoleKey.Backspace && inputBuilder.Length > 0)
-    {
-        inputBuilder.Remove(inputBuilder.Length - 1, 1);
-        Console.Write("\b \b");
-    }
-    else if (keyInfo.Key == ConsoleKey.Escape)
-    {
-        break;
-    }
-    else
-    {
-        inputBuilder.Append(keyInfo.KeyChar);
-        Console.Write(keyInfo.KeyChar); 
-    }
-    
-    
 }
 
-void ClearCurrentConsoleLine()
-{
-    var currentLineCursor = Console.CursorTop;
-    Console.SetCursorPosition(0, currentLineCursor);
-    Console.Write(new string(' ', Console.WindowWidth));
-    Console.SetCursorPosition(0, currentLineCursor);
-}
 
 void ProcessOnEnterCommand(string input)
 {

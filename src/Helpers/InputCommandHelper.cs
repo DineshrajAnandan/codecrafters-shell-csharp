@@ -9,4 +9,6 @@ public class InputCommandHelper
         arguments = inputArr.Length == 1 ? null : inputArr[1];
         return command;
     }
+    
+    
 }
