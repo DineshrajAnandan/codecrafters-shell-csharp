@@ -35,21 +35,11 @@ public class CommandInput
         Console.Write("\b \b");
     }
 
-    private bool TryAutoCompleteFromExecutableFile(string prefix, out string remainingSubString)
-    {
-        var result = FileHelper.SearchFileNameInPathsByPrefix(Input);
-        if(!string.IsNullOrEmpty(result))
-            result = Path.GetFileName(result);
-        remainingSubString = result?.Substring(Input.Length) ?? string.Empty;
-        return !string.IsNullOrEmpty(remainingSubString);
-    }
+    
 
     public void TryAutoComplete()
     {
-        string remainingSubString;
-        var found = CommandsConstants.TryAutoCompleteCommand(Input, out remainingSubString) ||
-                            TryAutoCompleteFromExecutableFile(Input, out remainingSubString);
-        if (!found)
+        if (!InputCommandHelper.TryAutoCompleteCommand(Input, out var remainingSubString))
         {
             Beep();
             return;

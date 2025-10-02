@@ -10,12 +10,4 @@ public static class CommandsConstants
     
     public static readonly HashSet<string> BuiltInCommands = 
         [ECHO, EXIT, TYPE, PWD, CD];
-
-    public static bool TryAutoCompleteCommand(string prefix,
-        out string remainingSubString)
-    {
-        var command = BuiltInCommands.FirstOrDefault(c => c.StartsWith(prefix));
-        remainingSubString = command?.Substring(prefix.Length) ?? string.Empty;
-        return !string.IsNullOrEmpty(command);
-    }
 }
