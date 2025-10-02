@@ -7,9 +7,11 @@ public class CommandInput
 {
     private StringBuilder _inputBuilder = new();
     public string Input => _inputBuilder.ToString();
+    private Processor _processor;
 
-    public CommandInput()
+    public CommandInput(Processor processor)
     {
+        _processor = processor;
         Console.Write("$ ");
     }
 
@@ -38,5 +40,12 @@ public class CommandInput
         if(!CommandsConstants.TryAutoCompleteCommand(Input, out var remainingSubString))
             return;
         Append(remainingSubString + " ");
+    }
+
+    public void Process()
+    {
+        Console.Write("\n");
+        _processor.Process(Input);
+        NewLine();
     }
 }

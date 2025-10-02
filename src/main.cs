@@ -1,9 +1,7 @@
-using System.Text;
-using CodecraftersShell.Commands;
-using CodecraftersShell.Constants;
 using CodecraftersShell.Helpers;
 
-var commandInput = new CommandInput();
+var processor = new Processor();
+var commandInput = new CommandInput(processor);
 
 while (true)
 {
@@ -18,9 +16,7 @@ while (true)
         }
         case ConsoleKey.Enter:
         {
-            Console.Write("\n");
-            ProcessOnEnterCommand(commandInput.Input);
-            commandInput.NewLine();
+            commandInput.Process();
             break;
         }
         case ConsoleKey.Backspace:
@@ -33,25 +29,4 @@ while (true)
 }
 
 
-void ProcessOnEnterCommand(string input)
-{
-    var command = InputCommandHelper.ParseInputCommand(input, out var arguments);
 
-    try
-    {
-        ICommand commandToExecute = command switch
-        {
-            CommandsConstants.EXIT => new ExitCommand(),
-            CommandsConstants.ECHO => new EchoCommand(),
-            CommandsConstants.TYPE => new TypeCommand(),
-            CommandsConstants.PWD => new PwdCommand(),
-            CommandsConstants.CD => new CdCommand(),
-            _ => new CustomCommand(command)
-        };
-        commandToExecute.Handle(arguments);
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine(e.Message);
-    }
-}
