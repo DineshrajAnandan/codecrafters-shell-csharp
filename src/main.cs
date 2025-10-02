@@ -2,7 +2,7 @@ using CodecraftersShell.Helpers;
 
 var processor = new Processor();
 var commandInput = new CommandInput(processor);
-ConsoleKeyInfo prevKeyInfo = new ConsoleKeyInfo();
+var prevKeyInfo = new ConsoleKeyInfo();
 
 while (true)
 {
