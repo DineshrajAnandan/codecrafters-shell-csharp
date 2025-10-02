@@ -34,8 +34,11 @@ public class FileHelper
             .ToArray();
         foreach (var sourcePath in sourcePaths)
         {
-            var files = Directory.GetFiles(sourcePath, $"{prefix}.*", SearchOption.AllDirectories);
-            foreach (var fileName in files)
+            var fileNames = Directory.GetFiles(sourcePath)
+                .Select(f => Path.GetFileName(f))
+                .Where(f => f.StartsWith(prefix));
+            // var files = Directory.GetFiles(sourcePath, $"{prefix}.*", SearchOption.AllDirectories);
+            foreach (var fileName in fileNames)
             {
                 var filePath = Path.Combine(sourcePath, fileName);
                 if (!File.Exists(filePath)) 

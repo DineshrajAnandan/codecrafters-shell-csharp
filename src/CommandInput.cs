@@ -42,7 +42,8 @@ public class CommandInput
         var inFiles = false;
         if (!inCommands)
         {
-            remainingSubString = FileHelper.SearchFileNameInPathsByPrefix(Environment.GetEnvironmentVariable("PATH"), Input);
+            var result = FileHelper.SearchFileNameInPathsByPrefix(Environment.GetEnvironmentVariable("PATH"), Input);
+            remainingSubString = result.Substring(Input.Length);
             inFiles = !string.IsNullOrEmpty(remainingSubString);
         }
         if (!inCommands && !inFiles)
