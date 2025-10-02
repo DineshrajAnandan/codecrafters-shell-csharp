@@ -12,32 +12,42 @@ public class InputCommandHelper
         return command;
     }
     
-    public static bool TryAutoCompleteCommand(string prefix,
-        out string remainingSubString)
+    public static bool TryAutoCompleteCommand(
+        string prefix,
+        out string remainingSubString,
+        bool showAllCommands,
+        out IEnumerable<string> commands)
     {
-        return TryAutoCompleteCommandByBuiltInCommands(prefix, out remainingSubString) ||
-               TryAutoCompleteCommandByExecutableFiles(prefix, out remainingSubString);
-    }
-    
-    
-    private static bool TryAutoCompleteCommandByBuiltInCommands(string prefix,
-        out string remainingSubString)
-    {
-        var command = CommandsConstants.BuiltInCommands.FirstOrDefault(c => c.StartsWith(prefix));
-        remainingSubString = command?.Substring(prefix.Length) ?? string.Empty;
-        return !string.IsNullOrEmpty(command);
-    }
-    
-    private static bool TryAutoCompleteCommandByExecutableFiles(string prefix, out string remainingSubString)
-    {
-        remainingSubString  = string.Empty;
-        var result = FileHelper.SearchFileNameInPathsByPrefix(prefix);
+        commands = [];
+        remainingSubString = string.Empty;
+        var allCommands = new List<string>();
+        allCommands.AddRange(GetAllBuiltInCommandsByPrefix(prefix));
+        allCommands.AddRange(GetAllExecutableFilesCommandByPrefix(prefix));
         
-        if (string.IsNullOrEmpty(result)) 
+        if (!allCommands.Any())
+            return false;
+
+        if (allCommands.Count == 1)
+        {
+            remainingSubString = allCommands[0].Substring(prefix.Length);
+            return true;
+        }
+
+        if (!showAllCommands)
             return false;
         
-        result = Path.GetFileName(result);
-        remainingSubString = result.Substring(prefix.Length);
+        commands = allCommands;
         return true;
     }
+
+    private static IEnumerable<string> GetAllBuiltInCommandsByPrefix(string prefix)
+    {
+        return CommandsConstants.BuiltInCommands.Where(c => c.StartsWith(prefix));
+    }
+    
+    private static IEnumerable<string> GetAllExecutableFilesCommandByPrefix(string prefix)
+    {
+        return FileHelper.SearchFileNameInPathsByPrefix(prefix);
+    }
+    
 }

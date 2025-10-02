@@ -37,14 +37,28 @@ public class CommandInput
 
     
 
-    public void TryAutoComplete()
+    public void TryAutoComplete(bool showAllCommands = false)
     {
-        if (!InputCommandHelper.TryAutoCompleteCommand(Input, out var remainingSubString))
+        var found = InputCommandHelper.TryAutoCompleteCommand(
+            Input, 
+            out var remainingSubString,
+            showAllCommands,
+            out IEnumerable<string> commands);
+        if (!found)
         {
             Beep();
             return;
         }
-        Append(remainingSubString + " ");
+
+        if (!showAllCommands)
+        {
+            Append(remainingSubString + " ");
+            return;
+        }
+        
+        Console.WriteLine($"\n{string.Join("  ", commands)}");
+        Console.Write($"$ {Input}");
+        
     }
 
     public void Process()
@@ -57,5 +71,10 @@ public class CommandInput
     private void Beep()
     {
         Console.Write("\x07");
+    }
+
+    private void Bell()
+    {
+        Console.Write("\a");
     }
 }

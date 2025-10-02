@@ -11,20 +11,14 @@ public class FileHelper
                 filePath => IsFileExecutable(filePath)) ?? string.Empty;
     }
     
-    public static string SearchFileNameInPathsByPrefix(string prefix)
+    public static IEnumerable<string> SearchFileNameInPathsByPrefix(string prefix)
     {
-        var sourcePaths = GetSourcePaths();
-        foreach (var sourcePath in sourcePaths)
-        {
-            var executableFile = 
-                GetFileNamesInDirectory(prefix, sourcePath)
-                    .Select(f => Path.Combine(sourcePath, f))
-                    .FirstOrDefault(f => IsFileExecutable(f));
-            
-            if(!string.IsNullOrEmpty(executableFile))
-                return executableFile;
-        }
-        return null;
+        return GetSourcePaths()
+                .SelectMany(sourcePath => 
+                    GetFileNamesInDirectory(prefix, sourcePath)
+                        .Select(f => Path.Combine(sourcePath, f))
+                        .Where(f => IsFileExecutable(f))
+                );
     }
 
     private static IEnumerable<string?> GetFileNamesInDirectory(string prefix, string directoryPath)

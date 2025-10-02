@@ -2,6 +2,7 @@ using CodecraftersShell.Helpers;
 
 var processor = new Processor();
 var commandInput = new CommandInput(processor);
+ConsoleKeyInfo prevKeyInfo = new ConsoleKeyInfo();
 
 while (true)
 {
@@ -11,7 +12,7 @@ while (true)
     {
         case ConsoleKey.Tab:
         {
-            commandInput.TryAutoComplete();
+            commandInput.TryAutoComplete(prevKeyInfo.Key == ConsoleKey.Tab);
             break;
         }
         case ConsoleKey.Enter:
@@ -26,6 +27,8 @@ while (true)
             commandInput.Append(keyInfo.KeyChar);
             break;
     }
+    
+    prevKeyInfo =  keyInfo;
 }
 
 
