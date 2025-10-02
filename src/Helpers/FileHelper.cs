@@ -2,57 +2,51 @@ namespace CodecraftersShell.Helpers;
 
 public class FileHelper
 {
-    public static string SearchFileInPaths(
-        string paths,
-        string fileName)
+    public static string SearchFileInPaths(string fileName)
     {
-        var sourcePaths = paths.Split(Path.PathSeparator)
-            .Where(Directory.Exists)
-            .ToArray();
-        foreach (var sourcePath in sourcePaths)
-        {
-            var filePath = Path.Combine(sourcePath, fileName);
-            if (!File.Exists(filePath)) 
-                continue;
-            
-            var mode = File.GetUnixFileMode(filePath);
-            if (mode.HasFlag(UnixFileMode.UserExecute))
-            {
-                return filePath;
-            }
-        }
-
-        return null;
+        return GetSourcePaths()
+            .Select(
+                sourcePath => Path.Combine(sourcePath, fileName))
+            .FirstOrDefault(
+                filePath => IsFileExecutable(filePath)) ?? string.Empty;
     }
     
-    public static string SearchFileNameInPathsByPrefix(
-        string paths,
-        string prefix)
+    public static string SearchFileNameInPathsByPrefix(string prefix)
     {
-        var sourcePaths = paths.Split(Path.PathSeparator)
-            .Where(Directory.Exists)
-            .ToArray();
+        var sourcePaths = GetSourcePaths();
         foreach (var sourcePath in sourcePaths)
         {
-            var fileNames = Directory.GetFiles(sourcePath)
-                .Select(f => Path.GetFileName(f))
-                .Where(f => f.StartsWith(prefix));
-            // var files = Directory.GetFiles(sourcePath, $"{prefix}.*", SearchOption.AllDirectories);
-            foreach (var fileName in fileNames)
-            {
-                var filePath = Path.Combine(sourcePath, fileName);
-                if (!File.Exists(filePath)) 
-                    continue;
+            var executableFile = 
+                GetFileNamesInDirectory(prefix, sourcePath)
+                    .Select(f => Path.Combine(sourcePath, f))
+                    .FirstOrDefault(f => IsFileExecutable(f));
             
-                var mode = File.GetUnixFileMode(filePath);
-                if (mode.HasFlag(UnixFileMode.UserExecute))
-                {
-                    return fileName;
-                }
-            }
-            
+            if(!string.IsNullOrEmpty(executableFile))
+                return executableFile;
         }
-
         return null;
+    }
+
+    private static IEnumerable<string?> GetFileNamesInDirectory(string prefix, string directoryPath)
+    {
+        return Directory.GetFiles(directoryPath)
+            .Select(Path.GetFileName)
+            .Where(f => f.StartsWith(prefix));
+    }
+
+    private static bool IsFileExecutable(string filePath)
+    {
+        if (!File.Exists(filePath)) 
+            return false;
+            
+        var mode = File.GetUnixFileMode(filePath);
+        return mode.HasFlag(UnixFileMode.UserExecute);
+    }
+
+    private static IEnumerable<string> GetSourcePaths()
+    {
+        return Environment.GetEnvironmentVariable("PATH")
+            ?.Split(Path.PathSeparator)
+            .Where(Directory.Exists) ?? Enumerable.Empty<string>();
     }
 }

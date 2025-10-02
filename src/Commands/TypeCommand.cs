@@ -14,10 +14,7 @@ public class TypeCommand: ICommand
             return;
         }
 
-        var result = FileHelper.SearchFileInPaths(
-            Environment.GetEnvironmentVariable("PATH") ??
-            string.Empty,
-            type);
+        var result = FileHelper.SearchFileInPaths(type);
 
         if (!string.IsNullOrEmpty(result))
         {

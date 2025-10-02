@@ -14,10 +14,7 @@ public class CustomCommand: ICommand
     
     public void Handle(string arguments)
     {
-        var result = FileHelper.SearchFileInPaths(
-            Environment.GetEnvironmentVariable("PATH") ??
-            string.Empty,
-            _command);
+        var result = FileHelper.SearchFileInPaths(_command);
         
         if(string.IsNullOrEmpty(result))
             throw new Exception($"{_command}: command not found");
