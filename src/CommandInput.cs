@@ -37,13 +37,12 @@ public class CommandInput
 
     public void TryAutoComplete(bool showAllCommands = false)
     {
-        var found = InputCommandHelper.TryAutoCompleteCommand(
+        InputCommandHelper.TryAutoCompleteCommand(
             Input, 
             out var remainingSubString,
-            showAllCommands,
-            out IEnumerable<string> commands);
+            out var commands);
         
-        if (!found)
+        if (commands.Count == 0)
         {
             Beep();
             return;
