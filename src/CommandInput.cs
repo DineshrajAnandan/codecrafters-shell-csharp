@@ -50,7 +50,7 @@ public class CommandInput
 
         if (!showAllCommands)
         {
-            Append(remainingSubString + " ");
+            Append(remainingSubString);
             return;
         }
         
