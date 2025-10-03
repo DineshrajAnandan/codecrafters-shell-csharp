@@ -42,12 +42,6 @@ public class CommandInput
             out var remainingSubString,
             out var commands);
         
-        if (string.IsNullOrEmpty(remainingSubString))
-        {
-            Beep();
-            return;
-        }
-
         if (!string.IsNullOrEmpty(remainingSubString))
         {
             Append(remainingSubString);
@@ -56,8 +50,15 @@ public class CommandInput
             return;
         }
         
-        Console.WriteLine($"\n{string.Join("  ", commands)}");
-        Console.Write($"$ {Input}");
+        if (commands.Count > 0 && showAllCommands)
+        {
+            Console.WriteLine($"\n{string.Join("  ", commands)}");
+            Console.Write($"$ {Input}");
+            return;
+        }
+        
+        Beep();
+        
     }
 
     public void Process()
