@@ -42,15 +42,17 @@ public class CommandInput
             out var remainingSubString,
             out var commands);
         
-        if (commands.Count == 0)
+        if (string.IsNullOrEmpty(remainingSubString))
         {
             Beep();
             return;
         }
 
-        if (!showAllCommands)
+        if (!string.IsNullOrEmpty(remainingSubString))
         {
             Append(remainingSubString);
+            if(commands.Count == 1)
+                Append(" ");
             return;
         }
         
