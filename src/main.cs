@@ -32,6 +32,16 @@ while (true)
             commandInput.Process();
             break;
         }
+        case ConsoleKey.UpArrow:
+        {
+            commandInput.HistoryScrollUp(prevKeyInfo.Key != ConsoleKey.UpArrow);
+            break;
+        }
+        case ConsoleKey.DownArrow:
+        {
+            commandInput.HistoryScrollDown();
+            break;
+        }
         case ConsoleKey.Backspace:
             commandInput.RemoveLastChar();
             break;

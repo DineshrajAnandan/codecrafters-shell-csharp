@@ -5,20 +5,15 @@ namespace CodecraftersShell.Helpers;
 public class CommandInput
 {
     private readonly StringBuilder _inputBuilder = new();
-    public string Input => _inputBuilder.ToString();
+    private string Input => _inputBuilder.ToString();
     private readonly Processor _processor;
     private readonly History _history;
+    private LinkedListNode<string>? _currentHistoryNode = null;
 
     public CommandInput(Processor processor, History history)
     {
         _processor = processor;
         _history = history;
-        Console.Write("$ ");
-    }
-
-    public void NewLine()
-    {
-        _inputBuilder.Clear();
         Console.Write("$ ");
     }
     
@@ -69,9 +64,42 @@ public class CommandInput
         _processor.Process(Input);
         NewLine();
     }
+
+    public void HistoryScrollUp(bool isNewScroll = true)
+    {
+        if (_currentHistoryNode == _history.First)
+            return;
+        _currentHistoryNode = isNewScroll ? _history.Last : _currentHistoryNode?.Previous;
+        OverwriteInput(_currentHistoryNode?.Value ?? string.Empty);
+    }
+    
+    public void HistoryScrollDown()
+    {
+        _currentHistoryNode = _currentHistoryNode?.Next;
+        OverwriteInput(_currentHistoryNode?.Value ?? string.Empty);
+    }
+
+    private void OverwriteInput(string input)
+    {
+        ClearLine();
+        if (!string.IsNullOrEmpty(input))
+            Append(input);
+    }
+
+    private void ClearLine()
+    {
+        Console.Write(string.Join("", Enumerable.Repeat("\b \b", _inputBuilder.Length)));
+        _inputBuilder.Clear();
+    }
     
     private void Beep()
     {
         Console.Write("\x07");
+    }
+    
+    private void NewLine()
+    {
+        _inputBuilder.Clear();
+        Console.Write("$ ");
     }
 }

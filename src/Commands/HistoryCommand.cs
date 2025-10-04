@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-using CodecraftersShell.Extensions;
 using CodecraftersShell.Helpers;
 
 namespace CodecraftersShell.Commands;
