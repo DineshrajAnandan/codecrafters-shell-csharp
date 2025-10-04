@@ -3,7 +3,14 @@ using CodecraftersShell.Constants;
 
 namespace CodecraftersShell.Helpers;
 
-public class Processor
+public class Processor(
+    IExitCommand exitCommand,
+    IEchoCommand echoCommand,
+    ITypeCommand typeCommand,
+    IPwdCommand pwdCommand,
+    ICdCommand cdCommand,
+    ICustomCommand customCommand,
+    IHistoryCommand historyCommand)
 {
     public void Process(string input)
     {
@@ -13,12 +20,13 @@ public class Processor
         {
             ICommand commandToExecute = command switch
             {
-                CommandsConstants.EXIT => new ExitCommand(),
-                CommandsConstants.ECHO => new EchoCommand(),
-                CommandsConstants.TYPE => new TypeCommand(),
-                CommandsConstants.PWD => new PwdCommand(),
-                CommandsConstants.CD => new CdCommand(),
-                _ => new CustomCommand(command)
+                CommandsConstants.EXIT => exitCommand,
+                CommandsConstants.ECHO => echoCommand,
+                CommandsConstants.TYPE => typeCommand,
+                CommandsConstants.PWD => pwdCommand,
+                CommandsConstants.CD => cdCommand,
+                CommandsConstants.HISTORY => historyCommand,
+                _ => customCommand.WithCommand(command)
             };
             commandToExecute.Handle(arguments);
         }

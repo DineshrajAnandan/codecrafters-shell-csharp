@@ -3,7 +3,8 @@ using CodecraftersShell.Extensions;
 
 namespace CodecraftersShell.Commands;
 
-public class EchoCommand: ICommand
+public interface IEchoCommand : ICommand;
+public class EchoCommand: IEchoCommand
 {
     public void Handle(string arguments)
     {

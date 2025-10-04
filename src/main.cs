@@ -1,7 +1,19 @@
+using CodecraftersShell.Commands;
 using CodecraftersShell.Helpers;
 
-var processor = new Processor();
-var commandInput = new CommandInput(processor);
+var history = new History();
+
+IExitCommand exitCommand = new ExitCommand();
+IEchoCommand echoCommand = new EchoCommand();
+ITypeCommand typeCommand  = new TypeCommand();
+IPwdCommand pwdCommand = new PwdCommand();
+ICdCommand cdCommand  = new CdCommand();
+ICustomCommand customCommand  = new CustomCommand();
+IHistoryCommand historyCommand = new HistoryCommand(history);
+
+var processor = new Processor(exitCommand, echoCommand, typeCommand, pwdCommand, cdCommand, customCommand, historyCommand);
+var commandInput = new CommandInput(processor, history);
+
 var prevKeyInfo = new ConsoleKeyInfo();
 
 while (true)

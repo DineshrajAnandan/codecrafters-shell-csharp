@@ -3,13 +3,19 @@ using CodecraftersShell.Helpers;
 
 namespace CodecraftersShell.Commands;
 
-public class CustomCommand: ICommand
+public interface ICustomCommand : ICommand
 {
-    private readonly string _command;
+    ICustomCommand WithCommand(string command);
+}
+
+public class CustomCommand: ICustomCommand
+{
+    private string _command = string.Empty;
     
-    public CustomCommand(string command)
+    public ICustomCommand WithCommand(string command)
     {
         _command = command;
+        return this;
     }
     
     public void Handle(string arguments)

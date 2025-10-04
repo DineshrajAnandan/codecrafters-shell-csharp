@@ -1,6 +1,7 @@
 namespace CodecraftersShell.Commands;
 
-public class ExitCommand: ICommand
+public interface IExitCommand : ICommand;
+public class ExitCommand: IExitCommand
 {
     public void Handle(string arguments)
     {

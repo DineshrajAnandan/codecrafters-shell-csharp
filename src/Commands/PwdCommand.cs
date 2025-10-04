@@ -1,6 +1,7 @@
 namespace CodecraftersShell.Commands;
 
-public class PwdCommand: ICommand
+public interface IPwdCommand : ICommand;
+public class PwdCommand: IPwdCommand
 {
     public void Handle(string _)
     {

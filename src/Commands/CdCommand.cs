@@ -1,6 +1,7 @@
 namespace CodecraftersShell.Commands;
 
-public class CdCommand: ICommand
+public interface ICdCommand: ICommand;
+public class CdCommand: ICdCommand
 {
     public void Handle(string path)
     {

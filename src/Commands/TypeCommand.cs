@@ -3,7 +3,8 @@ using CodecraftersShell.Helpers;
 
 namespace CodecraftersShell.Commands;
 
-public class TypeCommand: ICommand
+public interface ITypeCommand : ICommand;
+public class TypeCommand: ITypeCommand
 {
     public void Handle(string arguments)
     {

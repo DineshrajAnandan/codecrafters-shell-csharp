@@ -1,17 +1,18 @@
 using System.Text;
-using CodecraftersShell.Constants;
 
 namespace CodecraftersShell.Helpers;
 
 public class CommandInput
 {
-    private StringBuilder _inputBuilder = new();
+    private readonly StringBuilder _inputBuilder = new();
     public string Input => _inputBuilder.ToString();
-    private Processor _processor;
+    private readonly Processor _processor;
+    private readonly History _history;
 
-    public CommandInput(Processor processor)
+    public CommandInput(Processor processor, History history)
     {
         _processor = processor;
+        _history = history;
         Console.Write("$ ");
     }
 
@@ -63,6 +64,7 @@ public class CommandInput
 
     public void Process()
     {
+        _history.Add(Input);
         Console.Write("\n");
         _processor.Process(Input);
         NewLine();
