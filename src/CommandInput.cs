@@ -59,23 +59,26 @@ public class CommandInput
 
     public void Process()
     {
+        _currentHistoryNode = null;
         _history.Add(Input);
         Console.Write("\n");
         _processor.Process(Input);
         NewLine();
     }
 
-    public void HistoryScrollUp(bool isNewScroll = true)
+    public void HistoryScrollUp()
     {
         if (_currentHistoryNode == _history.First)
             return;
-        _currentHistoryNode = isNewScroll ? _history.Last : _currentHistoryNode?.Previous;
+        _currentHistoryNode = _currentHistoryNode == null ? _history.Last : _currentHistoryNode?.Previous;
         OverwriteInput(_currentHistoryNode?.Value ?? string.Empty);
     }
     
     public void HistoryScrollDown()
     {
-        _currentHistoryNode = _currentHistoryNode?.Next;
+        if (_currentHistoryNode == null)
+            return;
+        _currentHistoryNode = _currentHistoryNode.Next;
         OverwriteInput(_currentHistoryNode?.Value ?? string.Empty);
     }
 

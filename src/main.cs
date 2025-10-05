@@ -34,7 +34,7 @@ while (true)
         }
         case ConsoleKey.UpArrow:
         {
-            commandInput.HistoryScrollUp(prevKeyInfo.Key != ConsoleKey.UpArrow);
+            commandInput.HistoryScrollUp();
             break;
         }
         case ConsoleKey.DownArrow:
