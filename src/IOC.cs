@@ -8,7 +8,6 @@ public class IOC
     public IOC InitContainer()
     {
         var history = new History();
-
         IHistoryCommand historyCommand = new HistoryCommand(history);
         IExitCommand exitCommand = new ExitCommand(historyCommand);
         IEchoCommand echoCommand = new EchoCommand();
