@@ -24,12 +24,11 @@ public static class StringExtension
         
         while (i < input.Length)
         {
-            char c = input[i];
+            var c = input[i];
             
             // Handle single quotes
             if (c == '\'')
             {
-                
                 i++; // Skip opening quote
                 var quoted = new StringBuilder();
                 while (i < input.Length && input[i] != '\'')
@@ -43,7 +42,6 @@ public static class StringExtension
             // Handle double quotes
             else if (c == '"')
             {
-                
                 i++; // Skip opening quote
                 var quoted = new StringBuilder();
                 while (i < input.Length && input[i] != '"')
@@ -71,7 +69,6 @@ public static class StringExtension
             // Regular unquoted text
             else
             {
-                
                 var text = new StringBuilder();
                 while (i < input.Length && !char.IsWhiteSpace(input[i]) && input[i] != '\'' && input[i] != '"')
                 {

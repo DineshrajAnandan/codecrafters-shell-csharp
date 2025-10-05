@@ -1,5 +1,4 @@
 using System.Text;
-using System.Text.RegularExpressions;
 using CodecraftersShell.Extensions;
 
 namespace CodecraftersShell.Commands;
@@ -10,6 +9,11 @@ public class EchoCommand: IEchoCommand
     public void Handle(string arguments)
     {
         var argumentsList = arguments.SplitArguments();
+        Console.WriteLine(GetDisplayText(argumentsList));
+    }
+
+    private static string GetDisplayText(List<string> argumentsList)
+    {
         var sb = new StringBuilder();
         for (var i = 0; i < argumentsList.Count; i++)
         {
@@ -22,6 +26,7 @@ public class EchoCommand: IEchoCommand
             }
             sb.Append(argumentsList[i]);
         }
-        Console.WriteLine(sb.ToString());
+
+        return sb.ToString();
     }
 }
