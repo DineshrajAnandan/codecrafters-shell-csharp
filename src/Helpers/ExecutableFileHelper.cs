@@ -1,8 +1,12 @@
 namespace CodecraftersShell.Helpers;
 
-public static class ExecutableFileHelper
+public interface IExecutableFileHelper
 {
-    public static string ExecuteFile(string command, string arguments)
+    string ExecuteFile(string command, string arguments);
+}
+public class ExecutableFileHelper: IExecutableFileHelper
+{
+    public string ExecuteFile(string command, string arguments)
     {
         var process = new System.Diagnostics.Process
         {

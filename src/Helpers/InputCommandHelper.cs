@@ -2,9 +2,17 @@ using CodecraftersShell.Constants;
 
 namespace CodecraftersShell.Helpers;
 
-public class InputCommandHelper
+public interface IInputCommandHelper
 {
-    public static string ParseInputCommand(string input, out string? arguments)
+    string ParseInputCommand(string input, out string? arguments);
+
+    void TryAutoCompleteCommand(string prefix,
+        out string remainingSubstring,
+        out List<string> commands);
+}
+public class InputCommandHelper(IFileHelper fileHelper): IInputCommandHelper
+{
+    public string ParseInputCommand(string input, out string? arguments)
     {
         var inputArr = input.Split(' ', 2);
         var command = inputArr[0];
@@ -12,7 +20,7 @@ public class InputCommandHelper
         return command;
     }
     
-    public static void TryAutoCompleteCommand(string prefix,
+    public void TryAutoCompleteCommand(string prefix,
         out string remainingSubstring,
         out List<string> commands)
     {
@@ -33,14 +41,14 @@ public class InputCommandHelper
             remainingSubstring = firstCommand.Substring(prefix.Length);
     }
 
-    private static IEnumerable<string> GetAllBuiltInCommandsByPrefix(string prefix)
+    private IEnumerable<string> GetAllBuiltInCommandsByPrefix(string prefix)
     {
         return CommandsConstants.BuiltInCommands.Where(c => c.StartsWith(prefix));
     }
     
-    private static IEnumerable<string> GetAllExecutableFilesCommandByPrefix(string prefix)
+    private IEnumerable<string> GetAllExecutableFilesCommandByPrefix(string prefix)
     {
-        return FileHelper.SearchFileNameInPathsByPrefix(prefix).Select(Path.GetFileName);
+        return fileHelper.SearchFileNameInPathsByPrefix(prefix).Select(Path.GetFileName);
     }
     
 }

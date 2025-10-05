@@ -1,23 +1,31 @@
 namespace CodecraftersShell.Helpers;
 
-public class FileHelper
+public interface IFileHelper
 {
-    public static string ReadAllText(string filePath)
+    string ReadAllText(string filePath);
+    void WriteAllText(string filePath, string data);
+    void AppendAllText(string filePath, string data);
+    string SearchFileInPaths(string fileName);
+    IEnumerable<string> SearchFileNameInPathsByPrefix(string prefix);
+}
+public class FileHelper: IFileHelper
+{
+    public string ReadAllText(string filePath)
     {
         return File.ReadAllText(filePath);
     }
     
-    public static void WriteAllText(string filePath, string data)
+    public void WriteAllText(string filePath, string data)
     {
         File.WriteAllText(filePath, data);
     }
     
-    public static void AppendAllText(string filePath, string data)
+    public void AppendAllText(string filePath, string data)
     {
         File.AppendAllText(filePath, data);
     }
     
-    public static string SearchFileInPaths(string fileName)
+    public string SearchFileInPaths(string fileName)
     {
         return GetSourcePaths()
             .Select(
@@ -26,7 +34,7 @@ public class FileHelper
                 filePath => IsFileExecutable(filePath)) ?? string.Empty;
     }
     
-    public static IEnumerable<string> SearchFileNameInPathsByPrefix(string prefix)
+    public IEnumerable<string> SearchFileNameInPathsByPrefix(string prefix)
     {
         return GetSourcePaths()
                 .SelectMany(sourcePath => 
@@ -36,14 +44,14 @@ public class FileHelper
                 );
     }
 
-    private static IEnumerable<string?> GetFileNamesInDirectory(string prefix, string directoryPath)
+    private IEnumerable<string?> GetFileNamesInDirectory(string prefix, string directoryPath)
     {
         return Directory.GetFiles(directoryPath)
             .Select(Path.GetFileName)
             .Where(f => f.StartsWith(prefix));
     }
 
-    private static bool IsFileExecutable(string filePath)
+    private bool IsFileExecutable(string filePath)
     {
         if (!File.Exists(filePath)) 
             return false;
@@ -52,7 +60,7 @@ public class FileHelper
         return mode.HasFlag(UnixFileMode.UserExecute);
     }
 
-    private static IEnumerable<string> GetSourcePaths()
+    private IEnumerable<string> GetSourcePaths()
     {
         return Environment.GetEnvironmentVariable("PATH")
             ?.Split(Path.PathSeparator)

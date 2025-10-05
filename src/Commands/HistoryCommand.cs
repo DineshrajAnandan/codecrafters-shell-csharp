@@ -8,12 +8,14 @@ public interface IHistoryCommand : ICommand
 }
 public class HistoryCommand: IHistoryCommand
 {
-    private int _lastHistoryWrittenToFile = 0;
+    private int _lastHistoryWrittenToFile;
     private readonly History _history;
+    private readonly IFileHelper _fileHelper;
 
-    public HistoryCommand(History history)
+    public HistoryCommand(History history, IFileHelper fileHelper)
     {
         _history = history;
+        _fileHelper = fileHelper;
         try
         {
             var historyFile = Environment.GetEnvironmentVariable("HISTFILE");
@@ -77,7 +79,7 @@ public class HistoryCommand: IHistoryCommand
     
     private void ReadHistoryFromFile(string fileName)
     {
-        var data = FileHelper.ReadAllText(fileName);
+        var data = _fileHelper.ReadAllText(fileName);
         if (string.IsNullOrEmpty(data))
             return;
         var historyList = data.Split('\n')
@@ -94,7 +96,7 @@ public class HistoryCommand: IHistoryCommand
     private void WriteHistoryToFile(string fileName)
     {
         var data = string.Join("\n", _history.RawData) + "\n";
-        FileHelper.WriteAllText(fileName, data);
+        _fileHelper.WriteAllText(fileName, data);
         _lastHistoryWrittenToFile = _history.RawData.Count;
     }
     
@@ -102,7 +104,7 @@ public class HistoryCommand: IHistoryCommand
     {
         var historyToAppend = _history.RawData.Skip(_lastHistoryWrittenToFile).ToList();
         var data = string.Join("\n", historyToAppend) + "\n";
-        FileHelper.AppendAllText(fileName, data);
+        _fileHelper.AppendAllText(fileName, data);
         _lastHistoryWrittenToFile = _history.RawData.Count;
     }
 

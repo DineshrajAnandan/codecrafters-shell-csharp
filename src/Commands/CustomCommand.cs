@@ -8,7 +8,9 @@ public interface ICustomCommand : ICommand
     ICustomCommand WithCommand(string command);
 }
 
-public class CustomCommand: ICustomCommand
+public class CustomCommand(
+    IFileHelper fileHelper,
+    IExecutableFileHelper executableFileHelper): ICustomCommand
 {
     private string _command = string.Empty;
     
@@ -20,12 +22,12 @@ public class CustomCommand: ICustomCommand
     
     public void Handle(string arguments)
     {
-        var result = FileHelper.SearchFileInPaths(_command);
+        var result = fileHelper.SearchFileInPaths(_command);
         
         if(string.IsNullOrEmpty(result))
             throw new Exception($"{_command}: command not found");
         
-        var output = ExecutableFileHelper.ExecuteFile(_command, arguments);
+        var output = executableFileHelper.ExecuteFile(_command, arguments);
         Console.WriteLine(output.TrimTrailingEmptyLine());
     }
 }

@@ -1,4 +1,4 @@
-var IOC = new IOC().InitContainer();
+var IOC = new Ioc().InitContainer();
 var commandInput = IOC.CommandInput;
 
 var prevKeyInfo = new ConsoleKeyInfo();

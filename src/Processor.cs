@@ -10,11 +10,12 @@ public class Processor(
     IPwdCommand pwdCommand,
     ICdCommand cdCommand,
     ICustomCommand customCommand,
-    IHistoryCommand historyCommand)
+    IHistoryCommand historyCommand,
+    IInputCommandHelper inputCommandHelper)
 {
     public void Process(string input)
     {
-        var command = InputCommandHelper.ParseInputCommand(input, out var arguments);
+        var command = inputCommandHelper.ParseInputCommand(input, out var arguments);
 
         try
         {

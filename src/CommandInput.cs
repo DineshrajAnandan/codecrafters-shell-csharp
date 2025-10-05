@@ -8,12 +8,16 @@ public class CommandInput
     private string Input => _inputBuilder.ToString();
     private readonly Processor _processor;
     private readonly History _history;
+    private readonly IInputCommandHelper _inputCommandHelper;
     private LinkedListNode<string>? _currentHistoryNode = null;
 
-    public CommandInput(Processor processor, History history)
+    public CommandInput(Processor processor, 
+        History history, 
+        IInputCommandHelper inputCommandHelper)
     {
         _processor = processor;
         _history = history;
+        _inputCommandHelper = inputCommandHelper;
         Console.Write("$ ");
     }
     
@@ -33,7 +37,7 @@ public class CommandInput
 
     public void TryAutoComplete(bool showAllCommands = false)
     {
-        InputCommandHelper.TryAutoCompleteCommand(
+        _inputCommandHelper.TryAutoCompleteCommand(
             Input, 
             out var remainingSubString,
             out var commands);

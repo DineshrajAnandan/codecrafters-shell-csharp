@@ -4,7 +4,7 @@ using CodecraftersShell.Helpers;
 namespace CodecraftersShell.Commands;
 
 public interface ITypeCommand : ICommand;
-public class TypeCommand: ITypeCommand
+public class TypeCommand(IFileHelper fileHelper): ITypeCommand
 {
     public void Handle(string arguments)
     {
@@ -15,7 +15,7 @@ public class TypeCommand: ITypeCommand
             return;
         }
 
-        var result = FileHelper.SearchFileInPaths(type);
+        var result = fileHelper.SearchFileInPaths(type);
 
         if (!string.IsNullOrEmpty(result))
         {
