@@ -2,6 +2,11 @@ namespace CodecraftersShell.Helpers;
 
 public class FileHelper
 {
+    public static string ReadAllText(string filePath)
+    {
+        return File.ReadAllText(filePath);
+    }
+    
     public static string SearchFileInPaths(string fileName)
     {
         return GetSourcePaths()
