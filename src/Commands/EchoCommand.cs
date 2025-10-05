@@ -22,6 +22,6 @@ public class EchoCommand: IEchoCommand
             }
             sb.Append(argumentsList[i]);
         }
-        Console.WriteLine(arguments);
+        Console.WriteLine(sb.ToString());
     }
 }
