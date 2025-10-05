@@ -43,7 +43,7 @@ public class HistoryCommand(History history): IHistoryCommand
 
     private void WriteHistoryToFile(string fileName)
     {
-        var data = string.Join("\n", history.RawData);
+        var data = string.Join("\n", history.RawData) + "\n";
         FileHelper.WriteAllText(fileName, data);
     }
 
