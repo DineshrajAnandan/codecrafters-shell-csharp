@@ -26,8 +26,9 @@ public class CustomCommand(
         
         if(string.IsNullOrEmpty(result))
             throw new Exception($"{_command}: command not found");
-        
-        var output = executableFileHelper.ExecuteFile(_command, arguments);
+
+        var argumentsList = arguments.SplitArguments().Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+        var output = executableFileHelper.ExecuteFile(_command, argumentsList);
         Console.WriteLine(output.TrimTrailingEmptyLine());
     }
 }

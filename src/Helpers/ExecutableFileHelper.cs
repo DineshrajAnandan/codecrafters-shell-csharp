@@ -1,19 +1,19 @@
+using System.Collections.ObjectModel;
+
 namespace CodecraftersShell.Helpers;
 
 public interface IExecutableFileHelper
 {
-    string ExecuteFile(string command, string arguments);
+    string ExecuteFile(string command, IEnumerable<string> arguments);
 }
 public class ExecutableFileHelper: IExecutableFileHelper
 {
-    public string ExecuteFile(string command, string arguments)
+    public string ExecuteFile(string command, IEnumerable<string> arguments)
     {
         var process = new System.Diagnostics.Process
         {
-            StartInfo = new System.Diagnostics.ProcessStartInfo
+            StartInfo = new System.Diagnostics.ProcessStartInfo(command, arguments)
             {
-                FileName = command,
-                Arguments = arguments,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
