@@ -16,7 +16,7 @@ public class EchoCommand: IEchoCommand
             if (string.IsNullOrWhiteSpace(argumentsList[i])) 
                 continue;
             
-            if (i > 0 && string.IsNullOrWhiteSpace(argumentsList[i - 1]))
+            if (i > 0 && argumentsList[i - 1] == " ")
             {
                 sb.Append(' ');
             }

@@ -20,24 +20,15 @@ public static class StringExtension
     public static List<string> SplitArguments(this string input)
     {
         var elements = new List<string>();
-        if(string.IsNullOrEmpty(input))
-            return elements;
-        var current = new StringBuilder();
         var i = 0;
         
         while (i < input.Length)
         {
             char c = input[i];
             
-            // Handle single quotes - add quoted content as single element
+            // Handle single quotes
             if (c == '\'')
             {
-                // Add any accumulated text before the quote
-                if (current.Length > 0)
-                {
-                    elements.Add(current.ToString());
-                    current.Clear();
-                }
                 
                 i++; // Skip opening quote
                 var quoted = new StringBuilder();
@@ -49,15 +40,9 @@ public static class StringExtension
                 elements.Add(quoted.ToString());
                 if (i < input.Length) i++; // Skip closing quote
             }
-            // Handle double quotes - add quoted content as single element
+            // Handle double quotes
             else if (c == '"')
             {
-                // Add any accumulated text before the quote
-                if (current.Length > 0)
-                {
-                    elements.Add(current.ToString());
-                    current.Clear();
-                }
                 
                 i++; // Skip opening quote
                 var quoted = new StringBuilder();
@@ -69,31 +54,32 @@ public static class StringExtension
                 elements.Add(quoted.ToString());
                 if (i < input.Length) i++; // Skip closing quote
             }
-            // Handle space - add as separate element
-            else if (c == ' ')
+            // Handle whitespace - collapse to single space
+            else if (char.IsWhiteSpace(c))
             {
-                // Add any accumulated text before the space
-                if (current.Length > 0)
+                // Skip all consecutive whitespace
+                while (i < input.Length && char.IsWhiteSpace(input[i]))
                 {
-                    elements.Add(current.ToString());
-                    current.Clear();
+                    i++;
                 }
-                
-                elements.Add(" ");
-                i++;
+                // Add single space element if there's more content
+                if (i < input.Length)
+                {
+                    elements.Add(" ");
+                }
             }
-            // Regular character - accumulate
+            // Regular unquoted text
             else
             {
-                current.Append(c);
-                i++;
+                
+                var text = new StringBuilder();
+                while (i < input.Length && !char.IsWhiteSpace(input[i]) && input[i] != '\'' && input[i] != '"')
+                {
+                    text.Append(input[i]);
+                    i++;
+                }
+                elements.Add(text.ToString());
             }
-        }
-        
-        // Add last accumulated text if any
-        if (current.Length > 0)
-        {
-            elements.Add(current.ToString());
         }
         
         return elements;
