@@ -6,40 +6,40 @@ public interface IHistoryCommand : ICommand
 {
     void ReadHistoryFromFile(string fileName);
 }
-public class HistoryCommand(History history): IHistoryCommand
+public class HistoryCommand: IHistoryCommand
 {
     private int _lastHistoryWrittenToFile = 0;
+    private readonly History _history;
+
+    public HistoryCommand(History history)
+    {
+        _history = history;
+        try
+        {
+            var historyFile = Environment.GetEnvironmentVariable("HISTFILE");
+            if(!string.IsNullOrEmpty(historyFile)) ReadHistoryFromFile(historyFile);
+        }
+        catch (Exception)
+        {
+            // ignore
+        }
+    }
     
     public void Handle(string arguments)
     {
         if (string.IsNullOrEmpty(arguments))
         {
-            PrintHistory(history.Data);
+            PrintHistory(_history.Data);
             return;
         }
         
         if (TryParseHistoryLimit(arguments, out var limitCount))
         {
-            PrintHistory(history.Data.Skip(history.Data.Count - limitCount));
+            PrintHistory(_history.Data.Skip(_history.Data.Count - limitCount));
             return;
         }
 
         HandleFileOperations(arguments);
-    }
-
-    public void ReadHistoryFromFile(string fileName)
-    {
-        var data = FileHelper.ReadAllText(fileName);
-        if (string.IsNullOrEmpty(data))
-            return;
-        var historyList = data.Split('\n')
-            .Where(x => !string.IsNullOrWhiteSpace(x))
-            .ToList();
-
-        foreach (var item in historyList)
-        {
-            history.Add(item);
-        }
     }
 
     private void HandleFileOperations(string arguments)
@@ -61,20 +61,35 @@ public class HistoryCommand(History history): IHistoryCommand
                 throw new ArgumentException($"Unknown history argument: {arguments}");
         }
     }
+    
+    public void ReadHistoryFromFile(string fileName)
+    {
+        var data = FileHelper.ReadAllText(fileName);
+        if (string.IsNullOrEmpty(data))
+            return;
+        var historyList = data.Split('\n')
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .ToList();
+
+        foreach (var item in historyList)
+        {
+            _history.Add(item);
+        }
+    }
 
     private void WriteHistoryToFile(string fileName)
     {
-        var data = string.Join("\n", history.RawData) + "\n";
+        var data = string.Join("\n", _history.RawData) + "\n";
         FileHelper.WriteAllText(fileName, data);
-        _lastHistoryWrittenToFile = history.RawData.Count;
+        _lastHistoryWrittenToFile = _history.RawData.Count;
     }
     
     private void AppendHistoryToFile(string fileName)
     {
-        var historyToAppend = history.RawData.Skip(_lastHistoryWrittenToFile).ToList();
+        var historyToAppend = _history.RawData.Skip(_lastHistoryWrittenToFile).ToList();
         var data = string.Join("\n", historyToAppend) + "\n";
         FileHelper.AppendAllText(fileName, data);
-        _lastHistoryWrittenToFile = history.RawData.Count;
+        _lastHistoryWrittenToFile = _history.RawData.Count;
     }
 
     private bool TryParseHistoryLimit(string arguments, out int limitCount)
