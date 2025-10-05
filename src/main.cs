@@ -14,6 +14,8 @@ IHistoryCommand historyCommand = new HistoryCommand(history);
 var processor = new Processor(exitCommand, echoCommand, typeCommand, pwdCommand, cdCommand, customCommand, historyCommand);
 var commandInput = new CommandInput(processor, history);
 
+historyCommand.ReadHistoryFromFile(Environment.GetEnvironmentVariable("HISTFILE"));
+
 var prevKeyInfo = new ConsoleKeyInfo();
 
 while (true)

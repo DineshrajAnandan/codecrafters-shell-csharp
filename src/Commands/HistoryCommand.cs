@@ -2,7 +2,10 @@ using CodecraftersShell.Helpers;
 
 namespace CodecraftersShell.Commands;
 
-public interface IHistoryCommand : ICommand;
+public interface IHistoryCommand : ICommand
+{
+    void ReadHistoryFromFile(string fileName);
+}
 public class HistoryCommand(History history): IHistoryCommand
 {
     private int _lastHistoryWrittenToFile = 0;
@@ -22,6 +25,21 @@ public class HistoryCommand(History history): IHistoryCommand
         }
 
         HandleFileOperations(arguments);
+    }
+
+    public void ReadHistoryFromFile(string fileName)
+    {
+        var data = FileHelper.ReadAllText(fileName);
+        if (string.IsNullOrEmpty(data))
+            return;
+        var historyList = data.Split('\n')
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .ToList();
+
+        foreach (var item in historyList)
+        {
+            history.Add(item);
+        }
     }
 
     private void HandleFileOperations(string arguments)
@@ -57,21 +75,6 @@ public class HistoryCommand(History history): IHistoryCommand
         var data = string.Join("\n", historyToAppend) + "\n";
         FileHelper.AppendAllText(fileName, data);
         _lastHistoryWrittenToFile = history.RawData.Count;
-    }
-
-    private void ReadHistoryFromFile(string fileName)
-    {
-        var data = FileHelper.ReadAllText(fileName);
-        if (string.IsNullOrEmpty(data))
-            return;
-        var historyList = data.Split('\n')
-            .Where(x => !string.IsNullOrWhiteSpace(x))
-            .ToList();
-
-        foreach (var item in historyList)
-        {
-            history.Add(item);
-        }
     }
 
     private bool TryParseHistoryLimit(string arguments, out int limitCount)
