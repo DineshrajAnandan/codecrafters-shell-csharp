@@ -7,6 +7,11 @@ public class FileHelper
         return File.ReadAllText(filePath);
     }
     
+    public static void WriteAllText(string filePath, string data)
+    {
+        File.WriteAllText(filePath, data);
+    }
+    
     public static string SearchFileInPaths(string fileName)
     {
         return GetSourcePaths()

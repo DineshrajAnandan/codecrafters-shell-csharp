@@ -32,12 +32,19 @@ public class HistoryCommand(History history): IHistoryCommand
                 ReadHistoryFromFile(fileName);
                 break;
             case "-w":
+                WriteHistoryToFile(fileName);
                 break;
             case "-a":
                 break;
             default:
                 throw new ArgumentException($"Unknown history argument: {arguments}");
         }
+    }
+
+    private void WriteHistoryToFile(string fileName)
+    {
+        var data = string.Join("\n", history.RawData);
+        FileHelper.WriteAllText(fileName, data);
     }
 
     private void ReadHistoryFromFile(string fileName)
