@@ -12,6 +12,11 @@ public class FileHelper
         File.WriteAllText(filePath, data);
     }
     
+    public static void AppendAllText(string filePath, string data)
+    {
+        File.AppendAllText(filePath, data);
+    }
+    
     public static string SearchFileInPaths(string fileName)
     {
         return GetSourcePaths()

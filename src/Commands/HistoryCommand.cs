@@ -35,6 +35,7 @@ public class HistoryCommand(History history): IHistoryCommand
                 WriteHistoryToFile(fileName);
                 break;
             case "-a":
+                AppendHistoryToFile(fileName);
                 break;
             default:
                 throw new ArgumentException($"Unknown history argument: {arguments}");
@@ -45,6 +46,12 @@ public class HistoryCommand(History history): IHistoryCommand
     {
         var data = string.Join("\n", history.RawData) + "\n";
         FileHelper.WriteAllText(fileName, data);
+    }
+    
+    private void AppendHistoryToFile(string fileName)
+    {
+        var data = string.Join("\n", history.RawData) + "\n";
+        FileHelper.AppendAllText(fileName, data);
     }
 
     private void ReadHistoryFromFile(string fileName)
