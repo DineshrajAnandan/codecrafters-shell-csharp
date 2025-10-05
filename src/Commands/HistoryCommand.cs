@@ -19,6 +19,11 @@ public class HistoryCommand(History history): IHistoryCommand
             return;
         }
 
+        HandleFileOperations(arguments);
+    }
+
+    private void HandleFileOperations(string arguments)
+    {
         var (flag, fileName) = ParseFileArguments(arguments);
 
         switch (flag)
@@ -33,7 +38,6 @@ public class HistoryCommand(History history): IHistoryCommand
             default:
                 throw new ArgumentException($"Unknown history argument: {arguments}");
         }
-
     }
 
     private void ReadHistoryFromFile(string fileName)
