@@ -16,6 +16,7 @@ public class HistoryCommand(History history): IHistoryCommand
         if (TryParseHistoryLimit(arguments, out var limitCount))
         {
             PrintHistory(history.Data.Skip(history.Data.Count - limitCount));
+            return;
         }
 
         var (flag, fileName) = ParseFileArguments(arguments);
