@@ -4,7 +4,7 @@ namespace CodecraftersShell.Commands;
 
 public interface IHistoryCommand : ICommand
 {
-    void ReadHistoryFromFile(string fileName);
+    void UpdateHistoryFile();
 }
 public class HistoryCommand: IHistoryCommand
 {
@@ -42,6 +42,19 @@ public class HistoryCommand: IHistoryCommand
         HandleFileOperations(arguments);
     }
 
+    public void UpdateHistoryFile()
+    {
+        try
+        {
+            var historyFile = Environment.GetEnvironmentVariable("HISTFILE");
+            if(!string.IsNullOrEmpty(historyFile)) AppendHistoryToFile(historyFile);
+        }
+        catch (Exception)
+        {
+            // ignore
+        }
+    }
+
     private void HandleFileOperations(string arguments)
     {
         var (flag, fileName) = ParseFileArguments(arguments);
@@ -62,7 +75,7 @@ public class HistoryCommand: IHistoryCommand
         }
     }
     
-    public void ReadHistoryFromFile(string fileName)
+    private void ReadHistoryFromFile(string fileName)
     {
         var data = FileHelper.ReadAllText(fileName);
         if (string.IsNullOrEmpty(data))
@@ -75,6 +88,7 @@ public class HistoryCommand: IHistoryCommand
         {
             _history.Add(item);
         }
+        _lastHistoryWrittenToFile = _history.RawData.Count;
     }
 
     private void WriteHistoryToFile(string fileName)
