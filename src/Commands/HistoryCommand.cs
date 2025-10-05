@@ -5,7 +5,7 @@ namespace CodecraftersShell.Commands;
 public interface IHistoryCommand : ICommand;
 public class HistoryCommand(History history): IHistoryCommand
 {
-    private readonly List<string> _historyWrittenToFile = new();
+    private int _lastHistoryWrittenToFile = 0;
     
     public void Handle(string arguments)
     {
@@ -48,16 +48,15 @@ public class HistoryCommand(History history): IHistoryCommand
     {
         var data = string.Join("\n", history.RawData) + "\n";
         FileHelper.WriteAllText(fileName, data);
-        _historyWrittenToFile.AddRange(history.RawData);
+        _lastHistoryWrittenToFile = history.RawData.Count;
     }
     
     private void AppendHistoryToFile(string fileName)
     {
-        var allHistory = history.RawData;
-        var historyToAppend = allHistory.Except(_historyWrittenToFile).ToList();
+        var historyToAppend = history.RawData.Skip(_lastHistoryWrittenToFile).ToList();
         var data = string.Join("\n", historyToAppend) + "\n";
         FileHelper.AppendAllText(fileName, data);
-        _historyWrittenToFile.AddRange(historyToAppend);
+        _lastHistoryWrittenToFile = history.RawData.Count;
     }
 
     private void ReadHistoryFromFile(string fileName)
